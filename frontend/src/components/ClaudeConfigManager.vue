@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, onMounted } from 'vue'
-import { LoadClaudeConfig, SaveClaudeConfig, LoadConfigProfiles, SaveConfigProfile, ApplyConfigProfile, DeleteConfigProfile } from '../../wailsjs/go/main/App'
+import { LoadClaudeConfig, SaveClaudeConfig, LoadConfigProfiles, SaveConfigProfile, ApplyConfigProfile, DeleteConfigProfile } from '../../wailsjs/go/app/App'
 
 const state = reactive({
   authToken: '',
