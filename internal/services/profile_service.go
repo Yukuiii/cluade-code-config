@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
 	"claude-code-config/internal/models"
+	"claude-code-config/internal/utils"
 )
 
 // ProfileService handles configuration profile operations
@@ -23,10 +23,10 @@ func NewProfileService(configService *ConfigService) *ProfileService {
 	}
 }
 
-// GetProfilesDir returns the directory for storing configuration profiles
+// GetProfilesDir returns directory for storing configuration profiles
 func (ps *ProfileService) GetProfilesDir() string {
-	homeDir, _ := os.UserHomeDir()
-	return filepath.Join(homeDir, ".claude", "profiles")
+	profilesDir, _ := utils.GetProfilesDir()
+	return profilesDir
 }
 
 // Save saves a configuration as a reusable profile
@@ -42,7 +42,7 @@ func (ps *ProfileService) Save(name, authToken, baseURL, description string) mod
 
 	// Create profiles directory
 	profilesDir := ps.GetProfilesDir()
-	if err := os.MkdirAll(profilesDir, 0755); err != nil {
+	if err := utils.EnsureDirectory(profilesDir); err != nil {
 		return models.ConfigResponse{
 			Success: false,
 			Message: fmt.Sprintf("Failed to create profiles directory: %v", err),
@@ -60,7 +60,7 @@ func (ps *ProfileService) Save(name, authToken, baseURL, description string) mod
 	}
 
 	// Check if profile already exists
-	profilePath := filepath.Join(profilesDir, name+".json")
+	profilePath := utils.JoinPaths(profilesDir, name+".json")
 	if _, err := os.Stat(profilePath); err == nil {
 		// Profile exists, update it
 		if existingProfile, err := ps.loadFromFile(profilePath); err == nil {
@@ -77,7 +77,9 @@ func (ps *ProfileService) Save(name, authToken, baseURL, description string) mod
 		}
 	}
 
-	if err := os.WriteFile(profilePath, jsonData, 0644); err != nil {
+	// Write with platform-specific permissions
+	permissions := utils.GetFilePermissions(false)
+	if err := os.WriteFile(profilePath, jsonData, permissions); err != nil {
 		return models.ConfigResponse{
 			Success: false,
 			Message: fmt.Sprintf("Failed to save profile: %v", err),
@@ -116,7 +118,7 @@ func (ps *ProfileService) LoadAll() models.ConfigResponse {
 	var profiles []models.ConfigProfile
 	for _, file := range files {
 		if !file.IsDir() && strings.HasSuffix(file.Name(), ".json") {
-			profilePath := filepath.Join(profilesDir, file.Name())
+			profilePath := utils.JoinPaths(profilesDir, file.Name())
 			if profile, err := ps.loadFromFile(profilePath); err == nil {
 				profiles = append(profiles, profile)
 			}
@@ -130,10 +132,10 @@ func (ps *ProfileService) LoadAll() models.ConfigResponse {
 	}
 }
 
-// Apply applies a saved profile to the current Claude Code configuration
+// Apply applies a saved profile to current Claude Code configuration
 func (ps *ProfileService) Apply(profileName string) models.ConfigResponse {
 	profilesDir := ps.GetProfilesDir()
-	profilePath := filepath.Join(profilesDir, profileName+".json")
+	profilePath := utils.JoinPaths(profilesDir, profileName+".json")
 	
 	// Load profile
 	profile, err := ps.loadFromFile(profilePath)
@@ -151,7 +153,7 @@ func (ps *ProfileService) Apply(profileName string) models.ConfigResponse {
 // Delete deletes a saved configuration profile
 func (ps *ProfileService) Delete(profileName string) models.ConfigResponse {
 	profilesDir := ps.GetProfilesDir()
-	profilePath := filepath.Join(profilesDir, profileName+".json")
+	profilePath := utils.JoinPaths(profilesDir, profileName+".json")
 	
 	// Check if profile exists
 	if _, err := os.Stat(profilePath); os.IsNotExist(err) {

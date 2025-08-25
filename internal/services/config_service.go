@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"claude-code-config/internal/models"
+	"claude-code-config/internal/utils"
 )
 
 // ConfigService handles Claude Code configuration operations
@@ -17,13 +17,13 @@ func NewConfigService() *ConfigService {
 	return &ConfigService{}
 }
 
-// GetConfigPath returns the Claude Code configuration file path
+// GetConfigPath returns Claude Code configuration file path
 func (cs *ConfigService) GetConfigPath() string {
-	homeDir, _ := os.UserHomeDir()
-	return filepath.Join(homeDir, ".claude", "settings.json")
+	configPath, _ := utils.GetConfigFilePath()
+	return configPath
 }
 
-// Load reads and parses the Claude Code configuration
+// Load reads and parses Claude Code configuration
 func (cs *ConfigService) Load() models.ConfigResponse {
 	configPath := cs.GetConfigPath()
 	
@@ -60,7 +60,7 @@ func (cs *ConfigService) Load() models.ConfigResponse {
 	}
 }
 
-// Save saves the Claude Code configuration
+// Save saves Claude Code configuration
 func (cs *ConfigService) Save(authToken, baseURL string) models.ConfigResponse {
 	configPath := cs.GetConfigPath()
 	
@@ -87,9 +87,16 @@ func (cs *ConfigService) Save(authToken, baseURL string) models.ConfigResponse {
 		config.Permissions.Deny = []string{}
 	}
 
-	// Create .claude directory if it doesn't exist
-	configDir := filepath.Dir(configPath)
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	// Create config directory if it doesn't exist
+	configDir, err := utils.GetConfigDir()
+	if err != nil {
+		return models.ConfigResponse{
+			Success: false,
+			Message: fmt.Sprintf("Failed to get config directory: %v", err),
+		}
+	}
+	
+	if err := utils.EnsureDirectory(configDir); err != nil {
 		return models.ConfigResponse{
 			Success: false,
 			Message: fmt.Sprintf("Failed to create configuration directory: %v", err),
@@ -105,8 +112,9 @@ func (cs *ConfigService) Save(authToken, baseURL string) models.ConfigResponse {
 		}
 	}
 
-	// Write to file
-	if err := os.WriteFile(configPath, jsonData, 0644); err != nil {
+	// Write to file with platform-specific permissions
+	permissions := utils.GetFilePermissions(false)
+	if err := os.WriteFile(configPath, jsonData, permissions); err != nil {
 		return models.ConfigResponse{
 			Success: false,
 			Message: fmt.Sprintf("Failed to write configuration file: %v", err),

@@ -12,12 +12,14 @@
 - 🎯 **用户友好**: 直观的界面设计，支持密码显示/隐藏
 - 🔍 **状态监控**: 实时显示配置加载状态
 - 💾 **自动保存**: 智能保存配置到正确位置
+- 🖥️ **跨平台支持**: 原生支持 Windows、macOS 和 Linux
 
 ## 🏗️ 技术栈
 
 ### 后端
 - **Go**: 主要开发语言
 - **Wails v2**: 桌面应用框架
+- **跨平台路径处理**: 智能识别不同操作系统的配置文件位置
 - **原生文件系统**: 直接访问用户配置文件
 
 ### 前端
@@ -57,21 +59,44 @@ wails dev
 ### 构建生产版本
 
 ```bash
-# 构建可分发的生产版本
+# 构建当前平台的生产版本
 wails build
+
+# 构建特定平台版本
+wails build -platform windows/amd64    # Windows 64位
+wails build -platform darwin/amd64     # macOS Intel
+wails build -platform darwin/arm64     # macOS Apple Silicon
+wails build -platform linux/amd64       # Linux 64位
+```
+
+### 交叉编译
+
+```bash
+# Windows 交叉编译（需要先设置环境变量）
+GOOS=windows GOARCH=amd64 go build -o claude-code-config.exe main.go
+
+# Linux 交叉编译
+GOOS=linux GOARCH=amd64 go build -o claude-code-config-linux main.go
 ```
 
 ## 📁 项目结构
 
 ```
 claude-code-config/
-├── main.go              # 应用程序入口
-├── app.go               # 应用程序核心逻辑
-├── config_service.go    # 配置文件服务
-├── profile_service.go   # 配置文件管理服务
-├── models.go            # 数据模型定义
-├── wails.json          # Wails 项目配置
-├── frontend/           # 前端代码
+├── main.go                     # 应用程序入口（保持原位）
+├── go.mod                     # Go 模块文件
+└── internal/                   # 内部包，不对外暴露
+    ├── models/                 # 数据模型层
+    │   └── models.go        # 基础模型定义
+    ├── services/               # 业务服务层
+    │   ├── config_service.go  # 配置服务
+    │   └── profile_service.go # 配置文件服务
+    ├── app/                    # 应用核心层
+    │   └── app.go             # 主应用逻辑
+    └── utils/                  # 工具层
+        ├── file.go            # 文件操作工具
+        └── platform.go        # 跨平台支持
+├── frontend/                  # 前端代码
 │   ├── src/
 │   │   ├── App.vue              # 主应用组件
 │   │   ├── components/
@@ -109,6 +134,21 @@ claude-code-config/
 
 应用程序管理标准的 Claude Code 配置文件：
 
+### 跨平台存储位置
+
+根据不同的操作系统，配置文件存储在不同位置：
+
+- **Windows**: `%APPDATA%\claude\settings.json`
+  - 例如: `C:\Users\用户名\AppData\Roaming\claude\settings.json`
+  
+- **macOS**: `~/.claude/settings.json`
+  - 例如: `/Users/用户名/.claude/settings.json`
+  
+- **Linux**: `~/.claude/settings.json`
+  - 例如: `/home/用户名/.claude/settings.json`
+
+### 配置文件结构
+
 ```json
 {
   "env": {
@@ -144,6 +184,45 @@ claude-code-config/
 ## 📄 许可证
 
 本项目采用 MIT 许可证。详情请参见 LICENSE 文件。
+
+## 🌍 跨平台特性
+
+### 平台特定的配置文件存储
+
+应用程序会根据操作系统自动选择合适的配置文件存储位置：
+
+#### Windows
+- **配置目录**: `%APPDATA%\claude\`
+- **配置文件**: `%APPDATA%\claude\settings.json`
+- **配置文件目录**: `%APPDATA%\claude\profiles\`
+- **权限**: 使用 Windows ACL 系统
+
+#### macOS
+- **配置目录**: `~/.claude/`
+- **配置文件**: `~/.claude/settings.json`
+- **配置文件目录**: `~/.claude/profiles/`
+- **权限**: 标准的 Unix 权限系统
+
+#### Linux
+- **配置目录**: `~/.claude/`
+- **配置文件**: `~/.claude/settings.json`
+- **配置文件目录**: `~/.claude/profiles/`
+- **权限**: 标准的 Unix 权限系统
+
+### 平台检测与适配
+
+应用程序使用 `internal/utils/platform.go` 来处理：
+- 自动检测当前运行平台
+- 智能选择配置文件存储位置
+- 设置平台特定的文件权限
+- 提供统一的 API 接口
+
+### 构建和分发
+
+- **自动平台检测**: Wails 自动检测目标平台并相应构建
+- **交叉编译**: 支持 Windows、macOS、Linux 之间的交叉编译
+- **原生性能**: 每个平台都使用原生的 WebView 组件
+- **一致的用户体验**: 跨平台保持一致的用户界面
 
 ## 🙏 致谢
 
