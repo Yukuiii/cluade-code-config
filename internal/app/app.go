@@ -52,6 +52,11 @@ func (a *App) SaveClaudeConfig(authToken, baseURL string) models.ConfigResponse 
 	return a.configService.Save(authToken, baseURL)
 }
 
+// DeleteClaudeConfig deletes the Claude Code configuration file
+func (a *App) DeleteClaudeConfig() models.ConfigResponse {
+	return a.configService.Delete()
+}
+
 // SaveConfigProfile saves a configuration as a reusable profile
 func (a *App) SaveConfigProfile(name, authToken, baseURL, description string) models.ConfigResponse {
 	return a.profileService.Save(name, authToken, baseURL, description)

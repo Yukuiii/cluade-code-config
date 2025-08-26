@@ -6,6 +6,10 @@ export function ApplyConfigProfile(arg1) {
   return window['go']['app']['App']['ApplyConfigProfile'](arg1);
 }
 
+export function DeleteClaudeConfig() {
+  return window['go']['app']['App']['DeleteClaudeConfig']();
+}
+
 export function DeleteConfigProfile(arg1) {
   return window['go']['app']['App']['DeleteConfigProfile'](arg1);
 }

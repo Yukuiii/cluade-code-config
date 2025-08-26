@@ -4,6 +4,8 @@ import {models} from '../models';
 
 export function ApplyConfigProfile(arg1:string):Promise<models.ConfigResponse>;
 
+export function DeleteClaudeConfig():Promise<models.ConfigResponse>;
+
 export function DeleteConfigProfile(arg1:string):Promise<models.ConfigResponse>;
 
 export function GetClaudeConfigPath():Promise<string>;

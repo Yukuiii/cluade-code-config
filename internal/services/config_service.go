@@ -127,3 +127,29 @@ func (cs *ConfigService) Save(authToken, baseURL string) models.ConfigResponse {
 		Data:    config,
 	}
 }
+
+// Delete removes Claude Code configuration file
+func (cs *ConfigService) Delete() models.ConfigResponse {
+	configPath := cs.GetConfigPath()
+	
+	// Check if file exists
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		return models.ConfigResponse{
+			Success: false,
+			Message: "Configuration file does not exist",
+		}
+	}
+
+	// Remove the file
+	if err := os.Remove(configPath); err != nil {
+		return models.ConfigResponse{
+			Success: false,
+			Message: fmt.Sprintf("Failed to delete configuration file: %v", err),
+		}
+	}
+
+	return models.ConfigResponse{
+		Success: true,
+		Message: "Configuration file deleted successfully",
+	}
+}

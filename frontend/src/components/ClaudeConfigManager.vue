@@ -19,7 +19,15 @@ const state = reactive({
     authToken: '',
     baseURL: ''
   },
-  activeView: 'config' // 'config' or 'profiles'
+  activeView: 'config', // 'config' or 'profiles'
+  // Confirmation dialog
+  showConfirmDialog: false,
+  confirmDialog: {
+    title: '',
+    message: '',
+    onConfirm: null,
+    onCancel: null
+  }
 })
 
 onMounted(async () => {
@@ -185,7 +193,12 @@ async function applyProfile(profileName) {
 }
 
 async function deleteProfile(profileName) {
-  if (!confirm(`确定要删除配置文件 "${profileName}" 吗？此操作不可恢复。`)) {
+  const confirmed = await showConfirm(
+    '删除配置文件', 
+    `确定要删除配置文件 "${profileName}" 吗？此操作不可恢复。`
+  )
+  
+  if (!confirmed) {
     return
   }
   
@@ -224,6 +237,32 @@ function closeProfileModal() {
 
 function switchView(view) {
   state.activeView = view
+}
+
+// Custom confirmation dialog functions
+function showConfirm(title, message) {
+  return new Promise((resolve) => {
+    state.confirmDialog = {
+      title,
+      message,
+      onConfirm: () => {
+        state.showConfirmDialog = false
+        resolve(true)
+      },
+      onCancel: () => {
+        state.showConfirmDialog = false
+        resolve(false)
+      }
+    }
+    state.showConfirmDialog = true
+  })
+}
+
+function closeConfirmDialog() {
+  state.showConfirmDialog = false
+  if (state.confirmDialog.onCancel) {
+    state.confirmDialog.onCancel()
+  }
 }
 </script>
 
@@ -358,7 +397,7 @@ function switchView(view) {
                 <path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2"/>
                 <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 003.51 15" stroke="currentColor" stroke-width="2" fill="none"/>
               </svg>
-              {{ state.loading ? '加载中...' : '重新加载' }}
+              {{ state.loading ? '加载中...' : '加载' }}
             </button>
             
             <button 
@@ -375,7 +414,7 @@ function switchView(view) {
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" opacity="0.25"/>
                 <path d="M12 2a10 10 0 0110 10" stroke="currentColor" stroke-width="4"/>
               </svg>
-              {{ state.loading ? '保存中...' : '保存配置' }}
+              {{ state.loading ? '保存中...' : '保存' }}
             </button>
             
             <button 
@@ -389,7 +428,7 @@ function switchView(view) {
                 <line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="2"/>
                 <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2"/>
               </svg>
-              保存为配置文件
+              另存为
             </button>
           </div>
         </form>
@@ -637,6 +676,29 @@ function switchView(view) {
           </div>
           <span class="status-value value--info">~/.claude/settings.json</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <div v-if="state.showConfirmDialog" class="modal-overlay" @click="closeConfirmDialog">
+    <div class="modal confirmation-modal" @click.stop>
+      <div class="modal-header">
+        <h3>{{ state.confirmDialog.title }}</h3>
+      </div>
+      <div class="modal-body">
+        <div class="confirmation-content">
+          <div class="confirmation-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <path d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <p class="confirmation-message">{{ state.confirmDialog.message }}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button @click="state.confirmDialog.onCancel && state.confirmDialog.onCancel()" class="btn btn--secondary">取消</button>
+        <button @click="state.confirmDialog.onConfirm && state.confirmDialog.onConfirm()" class="btn btn--danger">确认删除</button>
       </div>
     </div>
   </div>
@@ -1217,6 +1279,10 @@ function switchView(view) {
   color: #374151;
 }
 
+.input-wrapper .form-input {
+  padding-right: 3.5rem; /* Add more right padding for password toggle button */
+}
+
 .form-input:focus {
   outline: none;
   border-color: #1e40af;
@@ -1450,5 +1516,47 @@ function switchView(view) {
   .status-indicator {
     width: 100%;
   }
+}
+
+/* Confirmation Dialog */
+.confirmation-modal {
+  max-width: 480px;
+}
+
+.confirmation-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.confirmation-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  border-radius: 20px;
+  color: #d97706;
+}
+
+.confirmation-message {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.modal-footer .btn--danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.modal-footer .btn--danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
 }
 </style>
