@@ -1,0 +1,237 @@
+/* 通用样式 */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none !important;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  color: white;
+  box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3);
+}
+
+.btn--primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(30, 64, 175, 0.4);
+}
+
+.btn--secondary {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  color: #475569;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  border-color: #cbd5e0;
+  transform: translateY(-1px);
+}
+
+.btn--accent {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+}
+
+.btn--accent:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
+}
+
+.btn--small {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  border-radius: 12px;
+}
+
+.btn--large {
+  padding: 1.125rem 2rem;
+  font-size: 1.125rem;
+  border-radius: 18px;
+}
+
+.btn--danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn--danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+/* 表单样式 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.label-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1e40af;
+}
+
+.required {
+  color: #ef4444;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+  color: #374151;
+}
+
+.input-wrapper .form-input {
+  padding-right: 3.5rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #1e40af;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
+  background-color: #fefefe;
+}
+
+.form-input:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* 密码切换按钮 */
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: #9ca3af;
+  transition: all 0.2s ease;
+}
+
+.password-toggle:hover,
+.password-toggle.active {
+  color: #1e40af;
+  background-color: rgba(30, 64, 175, 0.1);
+}
+
+/* 消息样式 */
+.status-message {
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.message-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+}
+
+.message-text {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.message-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  color: inherit;
+}
+
+.message-close:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.status-message--success {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+}
+
+.status-message--error {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.status-message--info {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+/* 消息过渡动画 */
+.message-enter-active, .message-leave-active {
+  transition: all 0.3s ease;
+}
+
+.message-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.message-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* 旋转动画 */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
