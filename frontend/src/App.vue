@@ -36,8 +36,8 @@ import ClaudeConfigManager from './components/ClaudeConfigManager.vue'
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  background: #0f0f23;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #f9f9f9;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -49,7 +49,7 @@ body {
   align-items: center;
   padding: 2rem 1rem;
   position: relative;
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #3b82f6 50%, #60a5fa 75%, #93c5fd 100%);
+  background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 50%, #e8e8e8 100%);
 }
 
 .background-decoration {
@@ -65,7 +65,7 @@ body {
 .decoration-circle {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(96, 165, 250, 0.08));
+  background: linear-gradient(45deg, rgba(0, 122, 255, 0.08), rgba(52, 199, 89, 0.06));
   backdrop-filter: blur(2px);
   animation: float 6s ease-in-out infinite;
 }
@@ -102,7 +102,7 @@ body {
 .app-header {
   text-align: center;
   margin-bottom: 3rem;
-  color: white;
+  color: #1c1c1e;
   z-index: 1;
   position: relative;
 }
@@ -129,17 +129,17 @@ body {
   left: -10px;
   right: -10px;
   bottom: -10px;
-  background: linear-gradient(45deg, #3b82f6, #1d4ed8, #2563eb);
+  background: linear-gradient(45deg, #007AFF, #34C759, #5856D6);
   border-radius: 34px;
-  opacity: 0.6;
+  opacity: 0.3;
   filter: blur(20px);
   z-index: 1;
   animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
 }
 
 #logo:hover {
@@ -148,22 +148,23 @@ body {
 
 .app-header h1 {
   font-size: 3rem;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0.5rem 0;
-  background: linear-gradient(45deg, #ffffff, #f0f0f0);
+  background: linear-gradient(45deg, #1c1c1e, #48484a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-shadow: none;
   letter-spacing: -0.02em;
 }
 
 .subtitle {
   font-size: 1.2rem;
-  opacity: 0.9;
+  opacity: 0.7;
   margin: 0;
   font-weight: 400;
   letter-spacing: 0.5px;
+  color: #8e8e93;
 }
 
 .app-main {
@@ -178,7 +179,7 @@ body {
 
 .app-footer {
   margin-top: 2rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #8e8e93;
   font-size: 0.9rem;
   z-index: 1;
   position: relative;

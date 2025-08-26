@@ -22,38 +22,45 @@
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, #1e40af, #2563eb);
-  color: white;
-  box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3);
+  background: #ffffff;
+  color: #1c1c1e;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .btn--primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(30, 64, 175, 0.4);
+  background: rgba(0, 122, 255, 0.05);
+  color: #007AFF;
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15);
 }
 
 .btn--secondary {
-  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-  color: #475569;
-  border: 2px solid #e2e8f0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  color: #1c1c1e;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .btn--secondary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-  border-color: #cbd5e0;
-  transform: translateY(-1px);
+  background: rgba(0, 122, 255, 0.05);
+  color: #007AFF;
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15);
 }
 
 .btn--accent {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  color: white;
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+  background: #ffffff;
+  color: #1c1c1e;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .btn--accent:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
+  background: rgba(0, 122, 255, 0.05);
+  color: #007AFF;
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15);
 }
 
 .btn--small {
@@ -69,14 +76,17 @@
 }
 
 .btn--danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  background: #ffffff;
+  color: #FF3B30;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .btn--danger:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+  background: rgba(255, 59, 48, 0.05);
+  color: #FF3B30;
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.15);
 }
 
 /* 表单样式 */
@@ -91,7 +101,7 @@
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
-  color: #374151;
+  color: #1c1c1e;
   font-size: 0.95rem;
 }
 
@@ -99,11 +109,11 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #1e40af;
+  color: #007AFF;
 }
 
 .required {
-  color: #ef4444;
+  color: #FF3B30;
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -117,13 +127,13 @@
 .form-input {
   width: 100%;
   padding: 1rem 1.25rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
+  border: 1px solid #d1d1d6;
+  border-radius: 12px;
   font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  font-weight: 400;
+  transition: all 0.2s ease;
   background-color: #ffffff;
-  color: #374151;
+  color: #1c1c1e;
 }
 
 .input-wrapper .form-input {
@@ -132,15 +142,15 @@
 
 .form-input:focus {
   outline: none;
-  border-color: #1e40af;
-  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
   background-color: #fefefe;
 }
 
 .form-input:disabled {
-  background-color: #f9fafb;
+  background-color: #f2f2f7;
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 /* 密码切换按钮 */
@@ -158,8 +168,8 @@
 
 .password-toggle:hover,
 .password-toggle.active {
-  color: #1e40af;
-  background-color: rgba(30, 64, 175, 0.1);
+  color: #007AFF;
+  background-color: rgba(0, 122, 255, 0.1);
 }
 
 /* 消息样式 */
@@ -197,17 +207,17 @@
 }
 
 .status-message--success {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #34C759, #28A745);
   color: white;
 }
 
 .status-message--error {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #FF3B30, #D70015);
   color: white;
 }
 
 .status-message--info {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #007AFF, #0051D5);
   color: white;
 }
 
