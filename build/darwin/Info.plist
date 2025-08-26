@@ -18,8 +18,10 @@
         <key>CFBundleIconFile</key>
         <string>iconfile</string>
         <key>NSAppTransportSecurity</key>
-        <key>NSAllowsLocalNetworking</key>
-        <true/>
+        <dict>
+            <key>NSAllowsLocalNetworking</key>
+            <true/>
+        </dict>
         <key>LSMinimumSystemVersion</key>
         <string>10.13.0</string>
         <key>NSHighResolutionCapable</key>
